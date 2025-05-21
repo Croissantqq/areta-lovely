@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Apology Page</title>
+<style>
+  /* Reset */
+  * {
+    border: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Body and page container styles */
+  body {
+    background: #fff8f0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .page {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+  }
+  .page.active {
+    display: flex;
+  }
+
+  /* Page 1 styles */
+  #page1 {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  #page1 #question-text {
+    font-size: 1.5rem;
+    margin: 1rem 0;
+    color: #333;
+    text-align: center;
+  }
+  #page1 .btn-group {
+    margin-top: 1rem;
+  }
+  #page1 button {
+    font-size: 1.2rem;
+    padding: 0.5rem 1.5rem;
+    margin: 0 1rem;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    background-color: #ff6f91;
+    color: white;
+    transition: background-color 0.3s ease;
+    position: relative;
+  }
+  #page1 button:hover:not(:disabled) {
+    background-color: #ff4a6e;
+  }
+  #page1 button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  #page1 .tenor-gif-embed {
+    max-width: 250px !important;
+    margin: 0 auto;
+  }
+
+  /* Loading page (page 2) styles */
+  #page2 {
+    background: #000000;
+    color: white;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    align-items: center;
+  }
+  #page2 .loading-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.9rem;
+    color: white;
+    z-index: 10;
+  }
+  .cat {
+    margin: auto;
+    position: relative;
+    width: 16em;
+    height: 16em;
+    z-index: 5;
+    filter: brightness(100%) invert(100%);
+  }
+  .cat__segment {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 3em;
+    height: 2em;
+    transform: translate(-50%, -50%);
+  }
+  .cat__segment:before {
+    animation: loop 1.5s linear infinite;
+    background: linear-gradient(90deg, black 20%, black 20% 80%, black 80%);
+    border-radius: 0.25em;
+    content: "";
+    display: block;
+    will-change: transform;
+    width: 100%;
+    height: 100%;
+  }
+  .cat__segment:first-of-type {
+    width: 4em;
+    height: 4em;
+    z-index: 1;
+  }
+  .cat__segment:first-of-type:before {
+    background:
+      radial-gradient(0.25em 0.25em at 1.25em 1.6em, white 48%, rgba(255, 255, 255, 0) 50%),
+      radial-gradient(0.75em 0.75em at 1.25em 1.75em, white 48%, rgba(255, 255, 255, 0) 50%),
+      radial-gradient(0.25em 0.25em at 2.75em 1.6em, white 48%, rgba(255, 255, 255, 0) 50%),
+      radial-gradient(0.75em 0.75em at 2.75em 1.75em, white 48%, rgba(255, 255, 255, 0) 50%),
+      radial-gradient(0.9em 0.8em at 1.5em 2.65em, black 48%, rgba(0, 0, 0, 0) 50%),
+      radial-gradient(0.9em 0.8em at 2.5em 2.65em, black 48%, rgba(0, 0, 0, 0) 50%),
+      radial-gradient(1em 0.8em at 1.6em 2.75em, #444 48%, rgba(68, 68, 68, 0) 50%),
+      radial-gradient(1em 0.8em at 2.4em 2.75em, #444 48%, rgba(68, 68, 68, 0) 50%),
+      radial-gradient(0.75em 0.75em at 50% 2.5em, #e69999 48%, rgba(230, 153, 153, 0) 50%),
+      radial-gradient(4em 3em at 50% 2em, black 48%, rgba(0, 0, 0, 0) 50%),
+      radial-gradient(4em 3em at 50% 2.2em, #444 48%, rgba(68, 68, 68, 0) 50%),
+      radial-gradient(1em 3em at 0.75em 1.5em, #e69999 39%, black 40% 49%, rgba(0, 0, 0, 0) 50%),
+      radial-gradient(1em 3em at 3.25em 1.5em, #e69999 39%, black 40% 49%, rgba(0, 0, 0, 0) 50%),
+      radial-gradient(1em 2em at 0.5em 2.8em, black 48%, rgba(0, 0, 0, 0) 50%),
+      radial-gradient(1em 2em at 0.5em 3em, #444 48%, rgba(68, 68, 68, 0) 50%),
+      radial-gradient(1em 2em at 3.5em 2.8em, black 48%, rgba(0, 0, 0, 0) 50%),
+      radial-gradient(1em 2em at 3.5em 3em, #444 48%, rgba(68, 68, 68, 0) 50%);
+    background-repeat: no-repeat;
+  }
+  .cat__segment:last-of-type {
+    width: 3em;
+    height: 4em;
+  }
+  .cat__segment:last-of-type:before {
+    background: linear-gradient(90deg, rgb(232, 152, 152) 20%, #444 20% 80%, black 80%) 0 1.5em/3em 0.5em,
+      radial-gradient(3em 2em at top center, #444 30%, black 31% 48%, rgba(0, 0, 0, 0) 50%) 0 2em/3em 2em,
+      radial-gradient(1em 4em at 0.5em 0, black 48%, rgba(0, 0, 0, 0) 50%) 0 2em/3em 2em,
+      radial-gradient(1em 4em at 2.5em 0, black 48%, rgba(0, 0, 0, 0) 50%) 0 2em/3em 2em;
+    background-repeat: no-repeat;
+  }
+  .cat__segment:nth-of-type(1) {
+    transform: translate(-50%, -50%) rotate(-20deg);
+  }
+  .cat__segment:nth-of-type(1):before {
+    animation-delay: 0s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(2) {
+    transform: translate(-50%, -50%) rotate(-18.6666666667deg);
+  }
+  .cat__segment:nth-of-type(2):before {
+    animation-delay: 0.02s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(3) {
+    transform: translate(-50%, -50%) rotate(-17.3333333333deg);
+  }
+  .cat__segment:nth-of-type(3):before {
+    animation-delay: 0.04s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(4) {
+    transform: translate(-50%, -50%) rotate(-16deg);
+  }
+  .cat__segment:nth-of-type(4):before {
+    animation-delay: 0.06s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(5) {
+    transform: translate(-50%, -50%) rotate(-14.6666666667deg);
+  }
+  .cat__segment:nth-of-type(5):before {
+    animation-delay: 0.08s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(6) {
+    transform: translate(-50%, -50%) rotate(-13.3333333333deg);
+  }
+  .cat__segment:nth-of-type(6):before {
+    animation-delay: 0.1s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(7) {
+    transform: translate(-50%, -50%) rotate(-12deg);
+  }
+  .cat__segment:nth-of-type(7):before {
+    animation-delay: 0.12s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(8) {
+    transform: translate(-50%, -50%) rotate(-10.6666666667deg);
+  }
+  .cat__segment:nth-of-type(8):before {
+    animation-delay: 0.14s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(9) {
+    transform: translate(-50%, -50%) rotate(-9.3333333333deg);
+  }
+  .cat__segment:nth-of-type(9):before {
+    animation-delay: 0.16s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(10) {
+    transform: translate(-50%, -50%) rotate(-8deg);
+  }
+  .cat__segment:nth-of-type(10):before {
+    animation-delay: 0.18s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(11) {
+    transform: translate(-50%, -50%) rotate(-6.6666666667deg);
+  }
+  .cat__segment:nth-of-type(11):before {
+    animation-delay: 0.2s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(12) {
+    transform: translate(-50%, -50%) rotate(-5.3333333333deg);
+  }
+  .cat__segment:nth-of-type(12):before {
+    animation-delay: 0.22s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(13) {
+    transform: translate(-50%, -50%) rotate(-4deg);
+  }
+  .cat__segment:nth-of-type(13):before {
+    animation-delay: 0.24s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(14) {
+    transform: translate(-50%, -50%) rotate(-2.6666666667deg);
+  }
+  .cat__segment:nth-of-type(14):before {
+    animation-delay: 0.26s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(15) {
+    transform: translate(-50%, -50%) rotate(-1.3333333333deg);
+  }
+  .cat__segment:nth-of-type(15):before {
+    animation-delay: 0.28s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(16) {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  .cat__segment:nth-of-type(16):before {
+    animation-delay: 0.3s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(17) {
+    transform: translate(-50%, -50%) rotate(1.3333333333deg);
+  }
+  .cat__segment:nth-of-type(17):before {
+    animation-delay: 0.32s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(18) {
+    transform: translate(-50%, -50%) rotate(2.6666666667deg);
+  }
+  .cat__segment:nth-of-type(18):before {
+    animation-delay: 0.34s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(19) {
+    transform: translate(-50%, -50%) rotate(4deg);
+  }
+  .cat__segment:nth-of-type(19):before {
+    animation-delay: 0.36s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(20) {
+    transform: translate(-50%, -50%) rotate(5.3333333333deg);
+  }
+  .cat__segment:nth-of-type(20):before {
+    animation-delay: 0.38s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(21) {
+    transform: translate(-50%, -50%) rotate(6.6666666667deg);
+  }
+  .cat__segment:nth-of-type(21):before {
+    animation-delay: 0.4s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(22) {
+    transform: translate(-50%, -50%) rotate(8deg);
+  }
+  .cat__segment:nth-of-type(22):before {
+    animation-delay: 0.42s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(23) {
+    transform: translate(-50%, -50%) rotate(9.3333333333deg);
+  }
+  .cat__segment:nth-of-type(23):before {
+    animation-delay: 0.44s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(24) {
+    transform: translate(-50%, -50%) rotate(10.6666666667deg);
+  }
+  .cat__segment:nth-of-type(24):before {
+    animation-delay: 0.46s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(25) {
+    transform: translate(-50%, -50%) rotate(12deg);
+  }
+  .cat__segment:nth-of-type(25):before {
+    animation-delay: 0.48s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(26) {
+    transform: translate(-50%, -50%) rotate(13.3333333333deg);
+  }
+  .cat__segment:nth-of-type(26):before {
+    animation-delay: 0.5s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(27) {
+    transform: translate(-50%, -50%) rotate(14.6666666667deg);
+  }
+  .cat__segment:nth-of-type(27):before {
+    animation-delay: 0.52s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(28) {
+    transform: translate(-50%, -50%) rotate(16deg);
+  }
+  .cat__segment:nth-of-type(28):before {
+    animation-delay: 0.54s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(29) {
+    transform: translate(-50%, -50%) rotate(17.3333333333deg);
+  }
+  .cat__segment:nth-of-type(29):before {
+    animation-delay: 0.56s;
+    transform: translateX(6em);
+  }
+  .cat__segment:nth-of-type(30) {
+    transform: translate(-50%, -50%) rotate(18.6666666667deg);
+  }
+  .cat__segment:nth-of-type(30):before {
+    animation-delay: 0.58s;
+    transform: translateX(6em);
+  }
+}
+
+@keyframes loop {
+  from {
+    transform: rotate(0) translateX(6em);
+  }
+  to {
+    transform: rotate(-1turn) translateX(6em);
+  }
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes fadeInLetter {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+</style>
+</head>
+<body>
+  <div id="page1" class="page active" style="flex-direction: column; align-items: center; justify-content: center;">
+    <div class="tenor-gif-embed" data-postid="14907431710915501229" data-share-method="host" data-aspect-ratio="1.23226" data-width="250px"><a href="https://tenor.com/view/nailong-yellow-dragon-yellow-dino-pouting-gif-14907431710915501229">Nailong Yellow Dragon GIF</a>from <a href="https://tenor.com/search/nailong-gifs">Nailong GIFs</a></div>
+    <div id="question-text">pacarku masih ngambek?</div>
+    <div class="btn-group">
+      <button id="btn-udah">udah enggaaa</button>
+      <button id="btn-masih">masihh</button>
+    </div>
+  </div>
+
+  <div id="page2" class="page" style="background: #fff8f0; flex-direction: column; align-items: center; justify-content: center; color: black;">
+    <p class="loading-text" style="color: black;">Loading</p>
+    <div class="cat" style="filter: none; margin: 0 auto;">
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+      <div class="cat__segment"></div>
+    </div>
+  </div>
+
+  <div id="page3" class="page" style="flex-direction: column; align-items: center; justify-content: center;">
+    <div style="background: #fff8f0; border-radius: 20px; padding: 2rem 2.5rem; box-shadow: 0 0 25px rgba(255, 111, 145, 0.7); max-width: 400px; width: 90%; max-height: 450px; overflow: hidden; box-sizing: border-box; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+      <div class="tenor-gif-embed" data-postid="5012727700105884157" data-share-method="host" data-aspect-ratio="1" data-width="150px" style="max-width: 250px; margin-bottom: 1rem; margin-left: auto; margin-right: auto;"><a href="https://tenor.com/view/nai-long-chinese-good-boy-yellow-dragon-xaiohongshu-gif-5012727700105884157">Nai Long Chinese GIF</a>from <a href="https://tenor.com/search/nai+long-gifs">Nai Long GIFs</a></div>
+      <div id="hugging-text" style="font-size: 1.3rem; color: #e60039; font-weight: 700; margin-bottom: 1rem;">lovely bubub</div>
+      <div id="letter" style="max-width: 100%; font-size: 1.3rem; color: #4a1a2a; white-space: pre-line; font-family: 'Georgia', serif; line-height: 2; background: transparent; padding: 0 1rem; border-radius: 0; box-shadow: none;">
+        I may have hurt you with my words but I believe we can fix this together. Lovyuu moree ❤️
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const btnUdah = document.getElementById('btn-udah');
+    const btnMasih = document.getElementById('btn-masih');
+    const page1 = document.getElementById('page1');
+    const page2 = document.getElementById('page2');
+    const page3 = document.getElementById('page3');
+
+    // Make the "masihh" button move randomly and not clickable
+    function moveButtonRandomly() {
+      const btn = btnMasih;
+      const containerRect = page1.getBoundingClientRect();
+      const btnRect = btn.getBoundingClientRect();
+      const maxX = containerRect.width - btnRect.width;
+      const maxY = containerRect.height - btnRect.height;
+
+      const randomX = Math.floor(Math.random() * maxX);
+      const randomY = Math.floor(Math.random() * maxY);
+
+      btn.style.position = 'absolute';
+      btn.style.left = randomX + 'px';
+      btn.style.top = randomY + 'px';
+    }
+
+    btnMasih.addEventListener('mouseenter', () => {
+      moveButtonRandomly();
+    });
+
+    btnMasih.addEventListener('click', (e) => {
+      e.preventDefault();
+    });
+
+    btnUdah.addEventListener('click', () => {
+      // Show loading page
+      page1.classList.remove('active');
+      page2.classList.add('active');
+
+      // After 2.5 seconds, hide loading and show page 3
+      setTimeout(() => {
+        page2.classList.remove('active');
+        page3.classList.add('active');
+      }, 2500);
+    });
+  </script>
+  <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+</body>
+</html>
