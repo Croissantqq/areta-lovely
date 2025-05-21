@@ -503,3 +503,17 @@
   <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
 </body>
 </html>
+<script>
+    // Auto start all Tenor GIF videos on page load
+    window.addEventListener('load', () => {
+      const iframes = document.querySelectorAll('.tenor-gif-embed iframe');
+      iframes.forEach(iframe => {
+        const src = iframe.src;
+        if (!src.includes('autoplay=1')) {
+          iframe.src = src + (src.includes('?') ? '&' : '?') + 'autoplay=1';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
